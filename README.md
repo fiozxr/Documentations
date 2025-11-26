@@ -405,6 +405,12 @@ nmap -oA output_filename 192.168.1.1
 | `nmap -T4 TARGET` | Faster timing template |
 | `nmap --script SCRIPT CATEGORY TARGET` | Run NSE scripts |
 
+
+
+---
+
+
+
 # Complete SQLMap Documentation & Usage Guide
 
 ## Table of Contents
