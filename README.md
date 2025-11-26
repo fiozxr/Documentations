@@ -1,3 +1,6 @@
+# nmap & sqlmap
+
+---
 
 # Complete Nmap Documentation for Ethical Hacking & Penetration Testing
 
@@ -1069,16 +1072,6 @@ sqlmap -hh
 
 ---
 
-## 14. Conclusion
-
-SQLMap is a powerful tool for identifying and exploiting SQL injection vulnerabilities. Key takeaways:
-
-- ✅ Always get permission before testing
-- ✅ Use appropriate techniques for different scenarios
-- ✅ Document your findings properly
-- ✅ Practice on lab environments first
-- ✅ Keep security and privacy in mind
-- ✅ Stay updated with latest SQLMap releases
 
 ### Resources
 
