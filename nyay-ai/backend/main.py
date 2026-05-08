@@ -4,8 +4,8 @@ from pydantic import BaseModel
 import os
 import shutil
 
-# Import our RAG chain
-from rag import query_nyay_ai, CHROMA_DB_DIR
+# Import our RAG chain and the function to add documents dynamically
+from rag import query_nyay_ai, CHROMA_DB_DIR, add_document_to_db
 
 app = FastAPI(title="Nyay-AI Backend", description="Backend for the AI legal assistant")
 
@@ -36,20 +36,30 @@ async def chat_endpoint(request: ChatRequest):
     return ChatResponse(reply=reply)
 
 
-@app.post("/api/upload_pdf")
-async def upload_pdf(file: UploadFile = File(...)):
-    if not file.filename.endswith(".pdf"):
-        raise HTTPException(status_code=400, detail="Only PDF files are allowed")
+@app.post("/api/upload")
+async def upload_file(file: UploadFile = File(...)):
+    allowed_extensions = {".pdf", ".png", ".jpg", ".jpeg"}
+    ext = os.path.splitext(file.filename)[1].lower()
+
+    if ext not in allowed_extensions:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Only PDF and Image files {allowed_extensions} are allowed",
+        )
 
     data_dir = os.path.join(os.path.dirname(__file__), "..", "data")
+    os.makedirs(data_dir, exist_ok=True)
     file_path = os.path.join(data_dir, file.filename)
 
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    return {
-        "message": f"Successfully uploaded {file.filename}. Please restart the server or reinitialize the vectorstore to apply changes."
-    }
+    try:
+        # Add the document to our Chroma vector store
+        add_document_to_db(file_path, ext)
+        return {"message": f"Successfully processed and learned from {file.filename}."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
 
 
 @app.get("/health")

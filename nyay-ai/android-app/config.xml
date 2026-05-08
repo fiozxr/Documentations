@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.nyayai.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>NyayAI</name>
+    <description>
+        Nyay-AI Digital Lawyer Bot
+    </description>
+    <author email="jules@example.com" href="https://example.com">
+        Jules
+    </author>
+    <content src="index.html" />
+    <access origin="https://cdnjs.cloudflare.com" />
+    <access origin="http://localhost:8000" />
+    <access origin="http://10.0.2.2:8000" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+
+    <!-- Android Permissions for Camera / File picking -->
+    <platform name="android">
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.CAMERA" />
+            <uses-feature android:name="android.hardware.camera" android:required="false" />
+            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+        </config-file>
+    </platform>
+
+    <preference name="AndroidInsecureFileModeEnabled" value="true" />
+</widget>
