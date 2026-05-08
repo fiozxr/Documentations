@@ -114,6 +114,16 @@ function speak(text) {
 
 // UI Functions
 function appendMessage(text, sender) {
+    const wrapperDiv = document.createElement("div");
+    wrapperDiv.classList.add("message-wrapper", sender);
+
+    if (sender !== "system") {
+        const avatarDiv = document.createElement("div");
+        avatarDiv.classList.add("avatar");
+        avatarDiv.innerHTML = sender === "user" ? "<i class=\"fas fa-user\"></i>" : "<i class=\"fas fa-robot\"></i>";
+        wrapperDiv.appendChild(avatarDiv);
+    }
+
     const msgDiv = document.createElement('div');
     msgDiv.classList.add('message');
 
@@ -126,7 +136,8 @@ function appendMessage(text, sender) {
     }
 
     msgDiv.textContent = text;
-    chatBox.appendChild(msgDiv);
+    wrapperDiv.appendChild(msgDiv);
+    chatBox.appendChild(wrapperDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
@@ -144,10 +155,12 @@ async function sendMessage() {
     userInput.value = '';
 
     // Add loading indicator
-    const loadingDiv = document.createElement('div');
-    loadingDiv.classList.add('message', 'ai-message');
-    loadingDiv.textContent = 'Analyzing legal documents...';
-    chatBox.appendChild(loadingDiv);
+    const loadingWrapper = document.createElement("div");
+    loadingWrapper.classList.add("message-wrapper", "ai");
+    loadingWrapper.innerHTML = `<div class="avatar"><i class="fas fa-robot"></i></div><div class="message ai-message">Analyzing legal documents...</div>`;
+
+
+    chatBox.appendChild(loadingWrapper);
     chatBox.scrollTop = chatBox.scrollHeight;
 
     try {
@@ -159,7 +172,7 @@ async function sendMessage() {
             body: JSON.stringify({ message: text })
         });
 
-        chatBox.removeChild(loadingDiv);
+        chatBox.removeChild(loadingWrapper);
 
         if (!response.ok) {
             throw new Error(`Server error: ${response.status}`);
@@ -173,7 +186,7 @@ async function sendMessage() {
 
     } catch (error) {
         console.error("Error communicating with AI:", error);
-        chatBox.removeChild(loadingDiv);
+        chatBox.removeChild(loadingWrapper);
         appendMessage("Sorry, I am having trouble connecting to my database right now. Please try again later.", 'ai');
     }
 }

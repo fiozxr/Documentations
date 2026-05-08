@@ -4,29 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nyay-AI: Digital AI Legal Assistant</title>
+    <!-- Use Inter font for a modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <!-- FontAwesome for mic and attachment icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="chat-container">
         <header>
-            <div class="logo">⚖️ Nyay-AI</div>
-            <div class="subtitle">Indian Law Digital Assistant</div>
+            <div class="header-info">
+                <div class="logo">⚖️ Nyay-AI</div>
+                <div class="subtitle">Digital Indian Law Assistant</div>
+            </div>
             <div class="language-selector">
-                <label for="lang-select">Voice Language:</label>
                 <select id="lang-select">
-                    <option value="en-IN">English (India)</option>
-                    <option value="hi-IN">Hindi (India)</option>
-                    <option value="bn-IN">Bengali (India)</option>
-                    <option value="ta-IN">Tamil (India)</option>
+                    <option value="en-IN">English</option>
+                    <option value="hi-IN">Hindi</option>
+                    <option value="bn-IN">Bengali</option>
+                    <option value="ta-IN">Tamil</option>
                 </select>
             </div>
         </header>
 
         <main class="chat-box" id="chat-box">
-            <div class="message ai-message">
-                Hello! I am Nyay-AI, your Indian Legal Assistant. How can I help you today? (Please note I only answer based on my provided legal database to ensure accuracy).
+            <!-- Initial AI Welcome Message -->
+            <div class="message-wrapper ai">
+                <div class="avatar"><i class="fas fa-robot"></i></div>
+                <div class="message">
+                    Hello! I am Nyay-AI, your digital Indian Legal Assistant. How can I help you today? (Please note I only answer based on my provided legal database to ensure accuracy).
+                </div>
             </div>
         </main>
 
@@ -34,10 +40,14 @@
             <!-- Hidden file input allowing camera or file picking -->
             <input type="file" id="file-upload" accept=".pdf,image/*" capture="environment" style="display: none;">
 
-            <button id="attach-btn" class="attach-btn"><i class="fas fa-paperclip"></i></button>
-            <button id="mic-btn" class="mic-btn"><i class="fas fa-microphone"></i></button>
-            <textarea id="user-input" placeholder="Type, speak, or attach a legal document..." rows="1"></textarea>
-            <button id="send-btn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+            <button id="attach-btn" class="icon-btn" title="Attach Document"><i class="fas fa-paperclip"></i></button>
+
+            <div class="input-wrapper">
+                <textarea id="user-input" placeholder="Type, speak, or attach..." rows="1"></textarea>
+                <button id="mic-btn" class="icon-btn mic-btn" title="Voice Input"><i class="fas fa-microphone"></i></button>
+            </div>
+
+            <button id="send-btn" class="send-btn" title="Send Message"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
