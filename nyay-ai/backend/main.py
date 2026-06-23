@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import os
 import shutil
+import asyncio
 
 # Import our RAG chain and the function to add documents dynamically
 from rag import query_nyay_ai, CHROMA_DB_DIR, add_document_to_db
@@ -51,12 +52,15 @@ async def upload_file(file: UploadFile = File(...)):
     os.makedirs(data_dir, exist_ok=True)
     file_path = os.path.join(data_dir, file.filename)
 
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    def save_file():
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+    await asyncio.to_thread(save_file)
 
     try:
         # Add the document to our Chroma vector store
-        add_document_to_db(file_path, ext)
+        await asyncio.to_thread(add_document_to_db, file_path, ext)
         return {"message": f"Successfully processed and learned from {file.filename}."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
